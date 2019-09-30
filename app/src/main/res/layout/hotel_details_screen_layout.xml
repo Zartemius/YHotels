@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <include
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                layout="@layout/toolbar"/>
+
+        <ImageView
+                android:id="@+id/hotelImage"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/hotel_details_picture_height"
+                android:scaleType="centerCrop"
+                app:layout_constraintTop_toBottomOf="@id/toolbar"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"/>
+
+        <TextView
+                android:id="@+id/nameText"
+                android:fontFamily="@font/kanalisirung"
+                android:textColor="@color/colorPrimary"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/hotel_details_name_margin"
+                android:layout_marginStart="@dimen/hotel_details_name_margin"
+                android:layout_marginEnd="@dimen/hotel_details_name_margin"
+                app:layout_constraintTop_toBottomOf="@id/hotelImage"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"/>
+
+        <ImageView
+                android:id="@+id/addressImage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/hotel_details_detail_sign_padding_start"
+                android:paddingEnd="0dp"
+                android:paddingBottom="10dp"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/nameText"
+                app:srcCompat="@drawable/address"/>
+
+        <ImageView
+                android:id="@+id/starsImage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/hotel_details_detail_sign_padding_start"
+                android:paddingEnd="0dp"
+                android:paddingBottom="10dp"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/addressImage"
+                app:srcCompat="@drawable/star"/>
+
+        <ImageView
+                android:id="@+id/suitesImage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/hotel_details_detail_sign_padding_start"
+                android:paddingEnd="0dp"
+                android:paddingBottom="5dp"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/starsImage"
+                app:srcCompat="@drawable/key"/>
+
+        <ImageView
+                android:id="@+id/distanceImage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/hotel_details_detail_sign_padding_start"
+                android:paddingEnd="0dp"
+                android:paddingBottom="10dp"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/suitesImage"
+                app:srcCompat="@drawable/distance"/>
+
+        <View
+                android:id="@+id/emptyView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:paddingEnd="0dp"
+                android:paddingBottom="10dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/distanceImage"/>
+
+        <Button
+                android:id="@+id/buttonToShowMap"
+                android:layout_width="@dimen/action_button_width"
+                android:layout_height="wrap_content"
+                android:text="@string/button_show_map_title"
+                android:textColor="@android:color/white"
+                android:layout_marginStart="10dp"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:fontFamily="@font/kanalisirung"
+                android:layout_marginBottom="@dimen/action_button_margin_bottom"
+                style="@style/AppTheme.RoundedCornerMaterialButton"/>
+
+        <TextView
+                android:id="@+id/addressText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toRightOf="@id/addressImage"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/starsImage"
+                app:layout_constraintTop_toBottomOf="@id/nameText"
+                android:layout_marginStart="@dimen/hotel_details_detail_text_margin"
+                android:layout_marginEnd="@dimen/hotel_details_detail_text_margin"
+                android:fontFamily="@font/kanalisirung"
+                style="@style/HotelDetailsTitleTextView"/>
+
+        <TextView
+                android:id="@+id/starsText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toRightOf="@id/starsImage"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/suitesImage"
+                app:layout_constraintTop_toBottomOf="@id/addressImage"
+                android:layout_marginStart="@dimen/hotel_details_detail_text_margin"
+                android:layout_marginEnd="@dimen/hotel_details_detail_text_margin"
+                style="@style/HotelDetailsTitleTextView"/>
+
+        <TextView
+                android:id="@+id/suitesText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toRightOf="@id/suitesImage"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/distanceImage"
+                app:layout_constraintTop_toBottomOf="@id/starsImage"
+                android:layout_marginStart="@dimen/hotel_details_detail_text_margin"
+                android:layout_marginEnd="@dimen/hotel_details_detail_text_margin"
+                style="@style/HotelDetailsTitleTextView"/>
+        <TextView
+                android:id="@+id/distanceText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toRightOf="@id/distanceImage"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/suitesText"
+                app:layout_constraintBottom_toTopOf="@id/emptyView"
+                android:layout_marginStart="@dimen/hotel_details_detail_text_margin"
+                android:layout_marginEnd="@dimen/hotel_details_detail_text_margin"
+                style="@style/HotelDetailsTitleTextView"/>
+
+        <include
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/toolbar"
+                app:layout_constraintBottom_toBottomOf="parent"
+                layout="@layout/progressbar"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">YHotels</string>
+
+    <!--HotelDetailsScreen-->
+    <string name="button_show_map_title">Показать на карте</string>
+    <string name="hotel_details_screen_title">Детальный просмотр</string>
+
+
+    <!--MainScreen-->
+    <string name="main_screen_title">Отели</string>
+    <string name="title_info_about_distance">До центра:</string>
+
+    <!--FilterScreen-->
+    <string name="filter_screen_title">Фильтр</string>
+    <string name="switch_sort_by_distance_title">Сортировка по расстоянию до центра</string>
+    <string name="switch_sort_by_rooms_title">Сортировка по количеству номеров</string>
+    <string name="filter_screen_action_button_title">Применить настройки</string>
+
+    <!--Common-->
+    <string name="no_internet_connection_notification_text">Отсутствует интернет соединение</string>
+</resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--HotelDetailsScreen-->
+    <dimen name="hotel_details_picture_height">220dp</dimen>
+    <dimen name="hotel_details_name_margin">10dp</dimen>
+    <dimen name="hotel_details_detail_sign_padding_start">10dp</dimen>
+    <dimen name="hotel_details_detail_text_margin">10dp</dimen>
+
+    <!--FilterScreen-->
+    <dimen name="filter_screen_switch_margin">10dp</dimen>
+
+    <!--Common-->
+    <dimen name="action_button_width">150dp</dimen>
+    <dimen name="action_button_margin_bottom">25dp</dimen>
+</resources>
