@@ -57,6 +57,7 @@ class HotelDetailsScreen: Fragment(),
         hotelId?.let {it->
             mPresenter.setHotelId(it)
         }
+
         return inflater.inflate(R.layout.hotel_details_screen_layout,container,false)
     }
 
@@ -68,7 +69,7 @@ class HotelDetailsScreen: Fragment(),
         toolbar.setTitle(resources.getString(R.string.hotel_details_screen_title))
         toolbar.setNavigationIcon(R.drawable.baseline_arrow_back_white_24)
         toolbar.setNavigationOnClickListener {
-            mPresenter.navigateToPreviousScreen()
+            mPresenter.processReturningToPreviousScreen()
         }
 
         buttonToShowMap.setOnClickListener {
@@ -80,9 +81,9 @@ class HotelDetailsScreen: Fragment(),
         return isConnectedToNetwork(activity?.applicationContext)
     }
 
-    override fun loadPicture(imageIsAvailable:Boolean?,pictureUrl:String?) {
+    override fun loadPicture(imageIsAvailable:Boolean,pictureUrl:String) {
         val pxToCutOfBitmap =  1
-        if(imageIsAvailable!!) {
+        if(imageIsAvailable) {
             mTarget = object : Target {
 
                 override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
@@ -166,7 +167,7 @@ class HotelDetailsScreen: Fragment(),
     }
 
     override fun onBackPressed() {
-        mPresenter.navigateToPreviousScreen()
+        mPresenter.processReturningToPreviousScreen()
     }
 
     override fun showProgressBar() {

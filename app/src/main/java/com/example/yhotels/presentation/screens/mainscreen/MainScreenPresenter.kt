@@ -122,14 +122,6 @@ class MainScreenPresenter@Inject constructor(router: Router,
         return mMainContentDataSource.getHotelsList()
     }
 
-    fun navigateToFilterScreen(fragment:Fragment){
-        mRouter.navigateTo(Screens.FilterScreenDestination(fragment,mFilterSettings))
-    }
-
-    private fun navigateToHotelDetailsScreen(hotelId:Int){
-        mRouter.navigateTo(Screens.HotelDetailsDestination(hotelId))
-    }
-
     private fun sortHotelsByAvailableRooms(hotels:ArrayList<Hotel>){
         hotels.sortByDescending{it.suites?.size}
     }
@@ -167,16 +159,14 @@ class MainScreenPresenter@Inject constructor(router: Router,
     }
 
     fun launchHotelDetailsScreen(hotelId:Int){
-        //saveChosenHotelId(hotelId)
-        navigateToHotelDetailsScreen(hotelId)
+        mRouter.navigateTo(Screens.HotelDetailsDestination(hotelId))
     }
 
     fun launchFilterScreen(fragment: Fragment){
         mRouter.navigateTo(Screens.FilterScreenDestination(fragment,mFilterSettings))
     }
 
-    fun clearCachedData(){
-
+    fun clearAppCachedData(){
         mFilterSettings.clearSettings()
         mHotelsList.clear()
     }

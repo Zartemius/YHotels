@@ -1,6 +1,5 @@
 package com.example.yhotels.presentation.screens.hoteldetailsscreen
 
-import android.util.Log
 import com.example.yhotels.data.MainContentDataSource
 import com.example.yhotels.presentation.BasePresenter
 import com.example.yhotels.presentation.entities.HotelDetails
@@ -20,41 +19,46 @@ class HotelDetailsScreenPresenter @Inject constructor(router: Router,
     private val mMainContentDataSource = mainContentDataSource
     private var mHotelDetails:HotelDetails? = null
     private val mRouter = router
-    private var hotelId:Int = 0
+    private var mHotelId:Int = 0
 
     private fun loadScreenContent(){
         if(mHotelDetails == null) {
             launch {
-                try{
-                        //val hotelId = mHotelInfoDataSource.getHotelId()
-                        val responseWithContent = mMainContentDataSource.getHotelById(hotelId)
-                        withContext(Dispatchers.Main) {
-                            if (responseWithContent.isSuccessful) {
-                                mHotelDetails = Mapper.mapHotelDetails(responseWithContent.body())
-                                view?.showProgressBar()
-                                view?.loadPicture(mHotelDetails?.imageIsAvailable,mHotelDetails?.imageUrl)
-                                try {
-                                    view?.loadMainContentInViews(mHotelDetails!!)
-                                }catch (e:NullPointerException){
-                                    e.printStackTrace()
+                    try{
+                            val responseWithContent = mMainContentDataSource.getHotelById(mHotelId)
+                            withContext(Dispatchers.Main) {
+                                if (responseWithContent.isSuccessful) {
+                                    mHotelDetails = Mapper.mapHotelDetails(responseWithContent.body())
+
+                                    view?.showProgressBar()
+
+                                    mHotelDetails?.let{
+                                        processLoadingHotelImage(it)
+                                        try {
+                                            view?.loadMainContentInViews(it)
+                                        }catch (e:NullPointerException){
+                                            e.printStackTrace()
+                                        }
+                                    }
                                 }
                             }
-                        }
-                }catch(e:NullPointerException){
-                  e.printStackTrace()
-                } catch (e: HttpException) {
-                    e.printStackTrace()
-                } catch (e:IOException){
-                    view?.showNoInternetWarning()
-                    e.printStackTrace()
-                } catch (e: Throwable) {
-                    e.printStackTrace()
+                    }catch(e:NullPointerException){
+                      e.printStackTrace()
+                    } catch (e: HttpException) {
+                        e.printStackTrace()
+                    } catch (e:IOException){
+                        view?.showNoInternetWarning()
+                        e.printStackTrace()
+                    } catch (e: Throwable) {
+                        e.printStackTrace()
+                    }
                 }
-            }
         }else{
             launch {
                 withContext(Dispatchers.Main) {
-                    view?.loadPicture(mHotelDetails?.imageIsAvailable,mHotelDetails?.imageUrl)
+                    mHotelDetails?.let {
+                        processLoadingHotelImage(it)
+                    }
                     try {
                         view?.loadMainContentInViews(mHotelDetails!!)
                         view?.setViewsReadyForDisplaying()
@@ -66,6 +70,14 @@ class HotelDetailsScreenPresenter @Inject constructor(router: Router,
         }
     }
 
+    private fun processLoadingHotelImage(hotelDetails: HotelDetails){
+        val imageIsAvailable = hotelDetails.imageIsAvailable
+        val imageUrl = hotelDetails.imageUrl
+        imageUrl?.let {
+            view?.loadPicture(imageIsAvailable, imageUrl)
+        }
+    }
+
     private fun initHotelDetailsScreen(){
         try {
                 if (view?.isInternetConnectionActive()!!) {
@@ -73,7 +85,7 @@ class HotelDetailsScreenPresenter @Inject constructor(router: Router,
                 } else {
                     view?.showNoInternetWarning()
                 }
-        }catch (e:java.lang.NullPointerException){
+        }catch (e:NullPointerException){
             e.printStackTrace()
         }
     }
@@ -92,7 +104,7 @@ class HotelDetailsScreenPresenter @Inject constructor(router: Router,
         view?.hideProgressBar()
     }
 
-    fun navigateToPreviousScreen(){
+    fun processReturningToPreviousScreen(){
         clearCurrentPresenterState()
         mRouter.exit()
     }
@@ -106,7 +118,6 @@ class HotelDetailsScreenPresenter @Inject constructor(router: Router,
     }
 
     fun setHotelId(id:Int){
-        hotelId = id
-        Log.i("PASSED_ID", "passed_id " + id)
+        mHotelId = id
     }
 }

@@ -11,7 +11,7 @@ class FilterScreenPresenter@Inject constructor(router: Router)
     private val mRouter = router
     private var mSortingByDistanceSettingIsSet = false
     private var mSortingByRoomsSettingIsSet = false
-    private var initialInitializationIsDone = false
+    private var mInitialInitializationIsDone = false
     private lateinit var mFilterSettings: FilterSettings
 
     private fun setFilterSettings(){
@@ -19,10 +19,10 @@ class FilterScreenPresenter@Inject constructor(router: Router)
         val sortingByDistanceSettingIsActive:Boolean
         val sortingByRoomsSettingIsActive:Boolean
 
-        if(::mFilterSettings.isInitialized && !initialInitializationIsDone) {
+        if(::mFilterSettings.isInitialized && !mInitialInitializationIsDone) {
             sortingByDistanceSettingIsActive = mFilterSettings.sortingByDistanceSettingIsActive()
             sortingByRoomsSettingIsActive = mFilterSettings.sortingByRoomsSettingIsActive()
-            initialInitializationIsDone = true
+            mInitialInitializationIsDone = true
         }else{
             sortingByDistanceSettingIsActive = mSortingByDistanceSettingIsSet
             sortingByRoomsSettingIsActive = mSortingByRoomsSettingIsSet
@@ -33,18 +33,14 @@ class FilterScreenPresenter@Inject constructor(router: Router)
 
     fun setSortingByDistance(switchIsChecked:Boolean){
         mSortingByDistanceSettingIsSet = switchIsChecked
-        //        //Log.i("SORTING", "BY_DASTANCE " + mSortingByDistanceWasChosen)
     }
 
     fun setSortingByRooms(switchIsChecked: Boolean){
         mSortingByRoomsSettingIsSet = switchIsChecked
-        //Log.i("SORTING", "BY_ROOMS " + mSortingByRoomsWasChosen)
     }
 
     override fun takeView(view: FilterScreenContract) {
         super.takeView(view)
-
-        //Log.i("SORTING", "BY_ROOMS " + mSortingByRoomsWasChosen)
         setFilterSettings()
     }
 
@@ -54,7 +50,6 @@ class FilterScreenPresenter@Inject constructor(router: Router)
             mFilterSettings.setSortingByRoomsSettingIsActive(mSortingByRoomsSettingIsSet)
             mFilterSettings.setSettingsCurrentState(true)
         }
-        //mRouter.exit()
     }
 
     private fun clearUnsavedSettings(){
@@ -65,14 +60,13 @@ class FilterScreenPresenter@Inject constructor(router: Router)
         if(mSortingByRoomsSettingIsSet){
             mSortingByRoomsSettingIsSet = false
         }
-        initialInitializationIsDone = false
+        mInitialInitializationIsDone = false
     }
 
     fun processReturningToPreviousScreen(){
         clearUnsavedSettings()
-        mRouter.exit()
         view?.returnCurrentSettings(mFilterSettings)
-
+        mRouter.exit()
     }
 
     fun setFilterSettings(filterSettings: FilterSettings){

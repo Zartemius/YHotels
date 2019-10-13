@@ -1,7 +1,6 @@
 package com.example.yhotels.presentation.screens.mainscreen
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
@@ -11,10 +10,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.yhotels.R
 import com.example.yhotels.YHotelsApp
 import com.example.yhotels.common.isConnectedToNetwork
-import com.example.yhotels.presentation.MainActivity
 import com.example.yhotels.presentation.entities.FilterSettings
 import com.example.yhotels.presentation.entities.Hotel
-import com.example.yhotels.presentation.screens.filterscreen.FilterScreen
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.main_screen_layout.*
 import kotlinx.android.synthetic.main.progressbar.*
@@ -44,7 +41,7 @@ class MainScreen:Fragment(), MainScreenContract, SwipeRefreshLayout.OnRefreshLis
 
         toolbar.setOnMenuItemClickListener{it->
             if(mFilterButtonIsEnabled) {
-                mPresenter.navigateToFilterScreen(this)
+                mPresenter.launchFilterScreen(this)
             }
             true
         }
@@ -84,8 +81,14 @@ class MainScreen:Fragment(), MainScreenContract, SwipeRefreshLayout.OnRefreshLis
     }
 
     override fun showNoInternetWarning() {
-        Snackbar.make(getView()!!,resources.getString(R.string.no_internet_connection_notification_text),
-            Snackbar.LENGTH_LONG).show()
+        try {
+                Snackbar.make(
+                    getView()!!, resources.getString(R.string.no_internet_connection_notification_text),
+                    Snackbar.LENGTH_LONG
+                ).show()
+        }catch (e:NullPointerException){
+            e.printStackTrace()
+        }
     }
 
     override fun setHotelsList(hotels: ArrayList<Hotel>) {
@@ -123,20 +126,13 @@ class MainScreen:Fragment(), MainScreenContract, SwipeRefreshLayout.OnRefreshLis
     }
 
     override fun onBackPressed() {
-        mPresenter.clearCachedData()
+        mPresenter.clearAppCachedData()
     }
 
     override fun setRecyclerViewPreparedForLoading() {
         mainScreenRecyclerView.visibility = View.VISIBLE
         emptyView.visibility = View.GONE
     }
-
-    /*fun launchFilterScreen(){
-        val newScreen = FilterScreen()
-        //val tag = FilterScreen::class.java.simpleName
-        newScreen.setTargetFragment(this,REQUEST_FILTER)
-        mPresenter.navigateToFilterScreen()
-    }*/
 
     fun handleFilterResult(filterSettings:FilterSettings){
         mPresenter.updateFilterSettings(filterSettings)

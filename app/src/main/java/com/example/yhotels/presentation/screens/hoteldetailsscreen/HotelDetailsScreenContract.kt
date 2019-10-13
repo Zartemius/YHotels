@@ -7,7 +7,7 @@ interface HotelDetailsScreenContract:BaseView {
 
     fun isInternetConnectionActive():Boolean?
 
-    fun loadPicture(imageIsAvailable:Boolean?,pictureUrl:String?)
+    fun loadPicture(imageIsAvailable:Boolean,pictureUrl:String)
 
     fun loadMainContentInViews(hotelDetails: HotelDetails)
 

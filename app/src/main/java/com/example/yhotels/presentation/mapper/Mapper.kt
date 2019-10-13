@@ -43,29 +43,30 @@ class Mapper{
         fun mapHotelDetails(hotelDetailsDTO: HotelDetailsDTO?):HotelDetails{
             val hotelDetails = HotelDetails()
 
-            if(hotelDetailsDTO?.name != null) {
-                hotelDetails.name = hotelDetailsDTO.name
+            hotelDetailsDTO?.name?.let {
+                hotelDetails.name = it
             }
-            if(hotelDetailsDTO?.address != null){
-                hotelDetails.address = hotelDetailsDTO.address
+            hotelDetailsDTO?.address?.let{
+                hotelDetails.address = it
             }
             hotelDetails.id = hotelDetailsDTO?.id
 
-            if(hotelDetailsDTO?.distance != null) {
-                hotelDetails.distance = hotelDetailsDTO.distance.toString()
+            hotelDetailsDTO?.distance?.let {
+                hotelDetails.distance = it.toString()
             }
 
-            if(hotelDetailsDTO?.image != null) {
+            hotelDetailsDTO?.image?.let {
+
                 if (hotelDetailsDTO.image.isNotEmpty()) {
                     hotelDetails.imageIsAvailable = true
                     hotelDetails.imageUrl = getImageUrl(hotelDetailsDTO.image)
                 }
             }
 
-            if(hotelDetailsDTO?.stars != null) {
+            hotelDetailsDTO?.stars?.let {
                 hotelDetails.stars = hotelDetailsDTO.stars.toString()
             }
-            if(hotelDetailsDTO?.suitesAvailability !=null) {
+            hotelDetailsDTO?.suitesAvailability?.let {
                 hotelDetails.suites = getSuites(hotelDetailsDTO.suitesAvailability).toString()
             }
             hotelDetails.lat = hotelDetailsDTO?.lat
