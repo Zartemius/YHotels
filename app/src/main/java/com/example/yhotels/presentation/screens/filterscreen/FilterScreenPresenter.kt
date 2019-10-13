@@ -1,39 +1,33 @@
 package com.example.yhotels.presentation.screens.filterscreen
 
-import com.example.yhotels.data.FilterSettingsDataSource
 import com.example.yhotels.presentation.BasePresenter
+import com.example.yhotels.presentation.entities.FilterSettings
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
-class FilterScreenPresenter@Inject constructor(router: Router,
-                                               filterSettingsDataSource: FilterSettingsDataSource)
+class FilterScreenPresenter@Inject constructor(router: Router)
     :BasePresenter<FilterScreenContract>(){
 
     private val mRouter = router
-    private val mFilterSettingsDataSource = filterSettingsDataSource
     private var mSortingByDistanceSettingIsSet = false
     private var mSortingByRoomsSettingIsSet = false
     private var initialInitializationIsDone = false
-
-    fun navigateToPreviousScreen(){
-        clearUnsavedSettings()
-        mRouter.exit()
-    }
+    private lateinit var mFilterSettings: FilterSettings
 
     private fun setFilterSettings(){
 
         val sortingByDistanceSettingIsActive:Boolean
         val sortingByRoomsSettingIsActive:Boolean
 
-        if(initialInitializationIsDone){
+        if(::mFilterSettings.isInitialized && !initialInitializationIsDone) {
+            sortingByDistanceSettingIsActive = mFilterSettings.sortingByDistanceSettingIsActive()
+            sortingByRoomsSettingIsActive = mFilterSettings.sortingByRoomsSettingIsActive()
+            initialInitializationIsDone = true
+        }else{
             sortingByDistanceSettingIsActive = mSortingByDistanceSettingIsSet
             sortingByRoomsSettingIsActive = mSortingByRoomsSettingIsSet
-        }else{
-            sortingByDistanceSettingIsActive = mFilterSettingsDataSource.sortingByDistanceSettingIsActive()
-            sortingByRoomsSettingIsActive = mFilterSettingsDataSource.sortingByRoomsSettingIsActive()
-            initialInitializationIsDone = true
         }
-        //Log.i("SORTING", "VIEW " + view)
+
         view?.initSwitches(sortingByDistanceSettingIsActive,sortingByRoomsSettingIsActive)
     }
 
@@ -55,9 +49,11 @@ class FilterScreenPresenter@Inject constructor(router: Router,
     }
 
     fun applySettings(){
-        mFilterSettingsDataSource.setSortingByDistanceSettingIsActive(mSortingByDistanceSettingIsSet)
-        mFilterSettingsDataSource.setSortingByRoomsSettingIsActive(mSortingByRoomsSettingIsSet)
-        mFilterSettingsDataSource.setSettingsCurrentState(true)
+        if(::mFilterSettings.isInitialized) {
+            mFilterSettings.setSortingByDistanceSettingIsActive(mSortingByDistanceSettingIsSet)
+            mFilterSettings.setSortingByRoomsSettingIsActive(mSortingByRoomsSettingIsSet)
+            mFilterSettings.setSettingsCurrentState(true)
+        }
         //mRouter.exit()
     }
 
@@ -70,5 +66,16 @@ class FilterScreenPresenter@Inject constructor(router: Router,
             mSortingByRoomsSettingIsSet = false
         }
         initialInitializationIsDone = false
+    }
+
+    fun processReturningToPreviousScreen(){
+        clearUnsavedSettings()
+        mRouter.exit()
+        view?.returnCurrentSettings(mFilterSettings)
+
+    }
+
+    fun setFilterSettings(filterSettings: FilterSettings){
+        mFilterSettings = filterSettings
     }
 }

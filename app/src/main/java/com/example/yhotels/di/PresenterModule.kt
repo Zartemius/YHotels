@@ -1,7 +1,5 @@
 package com.example.yhotels.di
 
-import com.example.yhotels.data.FilterSettingsDataSource
-import com.example.yhotels.data.HotelInfoDataSource
 import com.example.yhotels.data.MainContentDataSource
 import com.example.yhotels.presentation.MainActivityPresenter
 import com.example.yhotels.presentation.screens.filterscreen.FilterScreenPresenter
@@ -18,40 +16,24 @@ class PresenterModule {
     @Singleton
     @Provides
     fun provideMainScreenPresenter(router: Router,
-                                   filterSettingsDataSource: FilterSettingsDataSource,
-                                   mainContentDataSource: MainContentDataSource,
-                                   hotelInfoDataSource: HotelInfoDataSource)
+                                   mainContentDataSource: MainContentDataSource)
             : MainScreenPresenter {
-        return MainScreenPresenter(
-            router,
-            filterSettingsDataSource,
-            mainContentDataSource,
-            hotelInfoDataSource
-        )
+        return MainScreenPresenter(router,mainContentDataSource)
     }
 
     @Singleton
     @Provides
-    fun provideFilterScreenPresenter(router: Router,
-                                     filterSettingsDataSource: FilterSettingsDataSource)
+    fun provideFilterScreenPresenter(router: Router)
             : FilterScreenPresenter {
-        return FilterScreenPresenter(
-            router,
-            filterSettingsDataSource
-        )
+        return FilterScreenPresenter(router)
     }
 
     @Singleton
     @Provides
     fun provideHotelDetailsScreenPresenter(router: Router,
-                                           hotelInfoDataSource: HotelInfoDataSource,
-                                           mainContentDataSource: MainContentDataSource)
+                                           mainContentDataSource:MainContentDataSource)
             : HotelDetailsScreenPresenter {
-        return HotelDetailsScreenPresenter(
-            router,
-            hotelInfoDataSource,
-            mainContentDataSource
-        )
+        return HotelDetailsScreenPresenter(router,mainContentDataSource)
     }
 
     @Singleton

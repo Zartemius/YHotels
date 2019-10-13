@@ -8,8 +8,7 @@ import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [AppModule::class,
-    NavigationModule::class,
+@Component(modules = [NavigationModule::class,
     DataSourceModule::class,
     PresenterModule::class])
 

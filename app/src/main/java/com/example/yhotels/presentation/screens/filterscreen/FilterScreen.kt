@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.yhotels.R
 import com.example.yhotels.YHotelsApp
+import com.example.yhotels.presentation.entities.FilterSettings
+import com.example.yhotels.presentation.screens.mainscreen.MainScreen
 import kotlinx.android.synthetic.main.filter_screen_layout.*
 import kotlinx.android.synthetic.main.toolbar.*
 import javax.inject.Inject
@@ -14,12 +16,28 @@ import javax.inject.Inject
 class FilterScreen: Fragment(), FilterScreenContract {
 
     @Inject
-    lateinit var mPresenter: FilterScreenPresenter
+    lateinit var mPresenter:FilterScreenPresenter
+
+    companion object{
+        private const val FILTER_SETTINGS  = "filter_settings"
+        fun getNewInstance(filterSettings: FilterSettings):Fragment {
+            val filterScreen = FilterScreen()
+            val arguments = Bundle()
+            arguments.putParcelable(FILTER_SETTINGS,filterSettings)
+            filterScreen.arguments = arguments
+            return filterScreen
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-
         (activity?.application as YHotelsApp).component.inject(this)
+
+        val filterSettings = arguments?.get(FILTER_SETTINGS)
+        filterSettings?.let { it ->
+            mPresenter.setFilterSettings(it as FilterSettings)
+        }
+
         return inflater.inflate(R.layout.filter_screen_layout,container,false)
     }
 
@@ -29,7 +47,7 @@ class FilterScreen: Fragment(), FilterScreenContract {
         toolbar.setTitle(resources.getString(R.string.filter_screen_title))
         toolbar.setNavigationIcon(R.drawable.baseline_arrow_back_white_24)
         toolbar.setNavigationOnClickListener {
-            mPresenter.navigateToPreviousScreen()
+            mPresenter.processReturningToPreviousScreen()
         }
 
         switchSortingByDistance.setOnCheckedChangeListener { compoundButton, isChecked ->
@@ -91,6 +109,11 @@ class FilterScreen: Fragment(), FilterScreenContract {
     }
 
     override fun onBackPressed() {
-        mPresenter.navigateToPreviousScreen()
+        mPresenter.processReturningToPreviousScreen()
+    }
+
+    override fun returnCurrentSettings(filterSettings: FilterSettings){
+        (targetFragment as? MainScreen)?.handleFilterResult(filterSettings)
+        activity?.supportFragmentManager?.popBackStackImmediate()
     }
 }

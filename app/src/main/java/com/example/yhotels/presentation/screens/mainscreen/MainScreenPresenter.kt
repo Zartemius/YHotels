@@ -1,12 +1,12 @@
 package com.example.yhotels.presentation.screens.mainscreen
 
-import com.example.yhotels.data.FilterSettingsDataSource
-import com.example.yhotels.data.HotelInfoDataSource
+import androidx.fragment.app.Fragment
 import com.example.yhotels.data.MainContentDataSource
 import com.example.yhotels.presentation.entities.Hotel
 import com.example.yhotels.data.entities.HotelDTO
 import com.example.yhotels.navigation.Screens
 import com.example.yhotels.presentation.BasePresenter
+import com.example.yhotels.presentation.entities.FilterSettings
 import com.example.yhotels.presentation.mapper.Mapper
 import kotlinx.coroutines.*
 import retrofit2.HttpException
@@ -16,16 +16,14 @@ import java.io.IOException
 import java.lang.NullPointerException
 import javax.inject.Inject
 
-class MainScreenPresenter@Inject constructor(router: Router,filterSettingsDataSource: FilterSettingsDataSource,
-                                             mainContentDataSource: MainContentDataSource,
-                                             hotelInfoDataSource: HotelInfoDataSource)
+class MainScreenPresenter@Inject constructor(router: Router,
+                                             mainContentDataSource: MainContentDataSource)
     :BasePresenter<MainScreenContract>() {
 
     private val mRouter = router
-    private val mFilterSettingsDataSource = filterSettingsDataSource
-    private val mHotelInfoDataSource = hotelInfoDataSource
     private val mMainContentDataSource = mainContentDataSource
     private var mHotelsList = ArrayList<Hotel>()
+    private var mFilterSettings: FilterSettings = FilterSettings()
 
     private fun loadHotels(listWasRefreshed:Boolean){
             launch {
@@ -124,12 +122,12 @@ class MainScreenPresenter@Inject constructor(router: Router,filterSettingsDataSo
         return mMainContentDataSource.getHotelsList()
     }
 
-    fun navigateToFilterScreen(){
-        mRouter.navigateTo(Screens.FilterScreenDestination())
+    fun navigateToFilterScreen(fragment:Fragment){
+        mRouter.navigateTo(Screens.FilterScreenDestination(fragment,mFilterSettings))
     }
 
-    fun navigateToHotelDetailsScreen(){
-        mRouter.navigateTo(Screens.HotelDetailsDestination())
+    private fun navigateToHotelDetailsScreen(hotelId:Int){
+        mRouter.navigateTo(Screens.HotelDetailsDestination(hotelId))
     }
 
     private fun sortHotelsByAvailableRooms(hotels:ArrayList<Hotel>){
@@ -138,10 +136,6 @@ class MainScreenPresenter@Inject constructor(router: Router,filterSettingsDataSo
 
     private fun sortHotelsByByDistanceFromCenter(hotels:ArrayList<Hotel>){
         hotels.sortBy{ it.distance}
-    }
-
-    private fun saveChosenHotelId(id:Int){
-        mHotelInfoDataSource.setHotelId(id)
     }
 
     override fun takeView(view: MainScreenContract) {
@@ -156,28 +150,38 @@ class MainScreenPresenter@Inject constructor(router: Router,filterSettingsDataSo
 
     private fun applyFilterSettings(hotelsList:ArrayList<Hotel>,
                                     sortingMustBeDoneForUpdatedList:Boolean){
-        val sortingByDistanceSettingIsActive = mFilterSettingsDataSource.sortingByDistanceSettingIsActive()
-        val sortingByRoomsSettingIsActive = mFilterSettingsDataSource.sortingByRoomsSettingIsActive()
-        val settingsWereChanged = mFilterSettingsDataSource.settingsWereChanged()
 
-        if(settingsWereChanged || sortingMustBeDoneForUpdatedList) {
+        val sortingByDistanceSettingIsActive = mFilterSettings.sortingByDistanceSettingIsActive()
+        val sortingByRoomsSettingIsActive = mFilterSettings.sortingByRoomsSettingIsActive()
+        val settingsWereChanged = mFilterSettings.settingsWereChanged()
+
+        if (settingsWereChanged || sortingMustBeDoneForUpdatedList) {
             if (sortingByDistanceSettingIsActive) {
                 sortHotelsByByDistanceFromCenter(hotelsList)
-                mFilterSettingsDataSource.setSettingsCurrentState(false)
+                mFilterSettings.setSettingsCurrentState(false)
             } else if (sortingByRoomsSettingIsActive) {
                 sortHotelsByAvailableRooms(hotelsList)
-                mFilterSettingsDataSource.setSettingsCurrentState(false)
+                    mFilterSettings.setSettingsCurrentState(false)
             }
         }
     }
 
-    fun processLaunchingHotelDetailsScreen(hotelId:Int){
-        saveChosenHotelId(hotelId)
-        navigateToHotelDetailsScreen()
+    fun launchHotelDetailsScreen(hotelId:Int){
+        //saveChosenHotelId(hotelId)
+        navigateToHotelDetailsScreen(hotelId)
+    }
+
+    fun launchFilterScreen(fragment: Fragment){
+        mRouter.navigateTo(Screens.FilterScreenDestination(fragment,mFilterSettings))
     }
 
     fun clearCachedData(){
-        mFilterSettingsDataSource.clearSettings()
+
+        mFilterSettings.clearSettings()
         mHotelsList.clear()
+    }
+
+    fun updateFilterSettings(filterSettings: FilterSettings){
+        mFilterSettings = filterSettings
     }
 }

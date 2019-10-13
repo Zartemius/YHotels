@@ -1,6 +1,7 @@
 package com.example.yhotels.presentation.screens.mainscreen
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
@@ -10,7 +11,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.yhotels.R
 import com.example.yhotels.YHotelsApp
 import com.example.yhotels.common.isConnectedToNetwork
+import com.example.yhotels.presentation.MainActivity
+import com.example.yhotels.presentation.entities.FilterSettings
 import com.example.yhotels.presentation.entities.Hotel
+import com.example.yhotels.presentation.screens.filterscreen.FilterScreen
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.main_screen_layout.*
 import kotlinx.android.synthetic.main.progressbar.*
@@ -40,7 +44,7 @@ class MainScreen:Fragment(), MainScreenContract, SwipeRefreshLayout.OnRefreshLis
 
         toolbar.setOnMenuItemClickListener{it->
             if(mFilterButtonIsEnabled) {
-                mPresenter.navigateToFilterScreen()
+                mPresenter.navigateToFilterScreen(this)
             }
             true
         }
@@ -112,7 +116,7 @@ class MainScreen:Fragment(), MainScreenContract, SwipeRefreshLayout.OnRefreshLis
     private fun onHotelsListItemClicked(hotel: Hotel){
         try {
             val hotelId = hotel.id
-            mPresenter.processLaunchingHotelDetailsScreen(hotelId!!)
+            mPresenter.launchHotelDetailsScreen(hotelId!!)
         }catch (e:NullPointerException){
             e.printStackTrace()
         }
@@ -125,5 +129,16 @@ class MainScreen:Fragment(), MainScreenContract, SwipeRefreshLayout.OnRefreshLis
     override fun setRecyclerViewPreparedForLoading() {
         mainScreenRecyclerView.visibility = View.VISIBLE
         emptyView.visibility = View.GONE
+    }
+
+    /*fun launchFilterScreen(){
+        val newScreen = FilterScreen()
+        //val tag = FilterScreen::class.java.simpleName
+        newScreen.setTargetFragment(this,REQUEST_FILTER)
+        mPresenter.navigateToFilterScreen()
+    }*/
+
+    fun handleFilterResult(filterSettings:FilterSettings){
+        mPresenter.updateFilterSettings(filterSettings)
     }
 }

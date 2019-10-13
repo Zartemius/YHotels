@@ -1,6 +1,6 @@
 package com.example.yhotels.presentation.screens.hoteldetailsscreen
 
-import com.example.yhotels.data.HotelInfoDataSource
+import android.util.Log
 import com.example.yhotels.data.MainContentDataSource
 import com.example.yhotels.presentation.BasePresenter
 import com.example.yhotels.presentation.entities.HotelDetails
@@ -13,21 +13,21 @@ import ru.terrakok.cicerone.Router
 import java.io.IOException
 import javax.inject.Inject
 
-class HotelDetailsScreenPresenter @Inject constructor(router: Router,hotelInfoDataSource: HotelInfoDataSource,
+class HotelDetailsScreenPresenter @Inject constructor(router: Router,
                                                       mainContentDataSource: MainContentDataSource)
                         :BasePresenter<HotelDetailsScreenContract>() {
 
-    private val mHotelInfoDataSource = hotelInfoDataSource
     private val mMainContentDataSource = mainContentDataSource
     private var mHotelDetails:HotelDetails? = null
     private val mRouter = router
+    private var hotelId:Int = 0
 
     private fun loadScreenContent(){
         if(mHotelDetails == null) {
             launch {
                 try{
-                        val hotelId = mHotelInfoDataSource.getHotelId()
-                        val responseWithContent = mMainContentDataSource.getHotelById(hotelId!!)
+                        //val hotelId = mHotelInfoDataSource.getHotelId()
+                        val responseWithContent = mMainContentDataSource.getHotelById(hotelId)
                         withContext(Dispatchers.Main) {
                             if (responseWithContent.isSuccessful) {
                                 mHotelDetails = Mapper.mapHotelDetails(responseWithContent.body())
@@ -103,5 +103,10 @@ class HotelDetailsScreenPresenter @Inject constructor(router: Router,hotelInfoDa
         if(lat != null && lon != null) {
             view?.callMapApp(lat, lon)
         }
+    }
+
+    fun setHotelId(id:Int){
+        hotelId = id
+        Log.i("PASSED_ID", "passed_id " + id)
     }
 }

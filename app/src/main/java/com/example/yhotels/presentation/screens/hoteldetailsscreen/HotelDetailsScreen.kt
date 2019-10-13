@@ -35,10 +35,28 @@ class HotelDetailsScreen: Fragment(),
     lateinit var mPresenter: HotelDetailsScreenPresenter
     private lateinit var mTarget:Target
 
+    companion object{
+        private const val HOTEL_ID = "hotel_id"
+
+        fun getNewInstance(hotelId:Int):Fragment{
+            val hotelDetailsScreen = HotelDetailsScreen()
+            val arguments = Bundle()
+            arguments.putInt(HOTEL_ID,hotelId)
+            hotelDetailsScreen.arguments = arguments
+
+            return hotelDetailsScreen
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?)
             : View? {
 
         (activity?.application as YHotelsApp).component.inject(this)
+
+        val hotelId = arguments?.getInt(HOTEL_ID)
+        hotelId?.let {it->
+            mPresenter.setHotelId(it)
+        }
         return inflater.inflate(R.layout.hotel_details_screen_layout,container,false)
     }
 

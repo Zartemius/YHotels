@@ -1,7 +1,6 @@
 package com.example.yhotels.presentation.entities
 
 class Hotel {
-
     var id:Int? = null
     var name:String? = null
     var address:String? = null
