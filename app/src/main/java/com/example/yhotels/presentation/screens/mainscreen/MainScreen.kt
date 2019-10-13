@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.toolbar.*
 import java.lang.NullPointerException
 import javax.inject.Inject
 
-class MainScreen:Fragment(), MainScreenContract, SwipeRefreshLayout.OnRefreshListener {
+class MainScreen : Fragment(), MainScreenContract, SwipeRefreshLayout.OnRefreshListener {
 
     @Inject
     lateinit var mPresenter: MainScreenPresenter

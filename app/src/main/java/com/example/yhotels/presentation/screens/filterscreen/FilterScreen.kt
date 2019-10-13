@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.filter_screen_layout.*
 import kotlinx.android.synthetic.main.toolbar.*
 import javax.inject.Inject
 
-class FilterScreen: Fragment(), FilterScreenContract {
+class FilterScreen : Fragment(), FilterScreenContract {
 
     @Inject
     lateinit var mPresenter:FilterScreenPresenter

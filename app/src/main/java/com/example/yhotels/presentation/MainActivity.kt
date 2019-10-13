@@ -2,18 +2,21 @@ package com.example.yhotels.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.example.yhotels.R
 import com.example.yhotels.YHotelsApp
+import com.example.yhotels.navigation.Screens
 import com.example.yhotels.presentation.screens.mainscreen.MainScreen
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
+import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.android.support.SupportAppNavigator
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var mPresenter:MainActivityPresenter
+    lateinit var mRouter:Router
 
     @Inject
     lateinit var navigatorHolder:NavigatorHolder
@@ -25,14 +28,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         (application as YHotelsApp).component.inject(this)
-        navigator = SupportAppNavigator(this,R.id.main_framelayout)
+        navigator = SupportAppNavigator(this,R.id.main_container)
+
+        if(savedInstanceState == null){
+            mRouter.newRootScreen(Screens.MainScreenDestination())
+        }
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onResumeFragments() {
         navigatorHolder.setNavigator(navigator)
-        mPresenter.bindActivity()
-
+        super.onResumeFragments()
     }
 
     override fun onPause() {
@@ -61,7 +66,6 @@ class MainActivity : AppCompatActivity() {
         if(onBackPressedListener != null){
             if(onBackPressedCalledImMainScreen){
                 onBackPressedListener.onBackPressed()
-                mPresenter.unbindActivity()
                 super.onBackPressed()
             }else{
                 onBackPressedListener.onBackPressed()

@@ -28,7 +28,7 @@ import java.lang.NullPointerException
 import java.util.*
 import javax.inject.Inject
 
-class HotelDetailsScreen: Fragment(),
+class HotelDetailsScreen : Fragment(),
     HotelDetailsScreenContract {
 
     @Inject

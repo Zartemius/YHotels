@@ -1,7 +1,6 @@
 package com.example.yhotels.di
 
 import com.example.yhotels.data.MainContentDataSource
-import com.example.yhotels.presentation.MainActivityPresenter
 import com.example.yhotels.presentation.screens.filterscreen.FilterScreenPresenter
 import com.example.yhotels.presentation.screens.hoteldetailsscreen.HotelDetailsScreenPresenter
 import com.example.yhotels.presentation.screens.mainscreen.MainScreenPresenter
@@ -23,9 +22,9 @@ class PresenterModule {
 
     @Singleton
     @Provides
-    fun provideFilterScreenPresenter(router: Router)
+    fun provideFilterScreenPresenter()
             : FilterScreenPresenter {
-        return FilterScreenPresenter(router)
+        return FilterScreenPresenter()
     }
 
     @Singleton
@@ -34,11 +33,5 @@ class PresenterModule {
                                            mainContentDataSource:MainContentDataSource)
             : HotelDetailsScreenPresenter {
         return HotelDetailsScreenPresenter(router,mainContentDataSource)
-    }
-
-    @Singleton
-    @Provides
-    fun provideMainActivityPresenter(router:Router):MainActivityPresenter{
-        return MainActivityPresenter(router)
     }
 }

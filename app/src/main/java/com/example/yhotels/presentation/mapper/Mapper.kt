@@ -1,6 +1,6 @@
 package com.example.yhotels.presentation.mapper
 
-import com.example.yhotels.common.Constants
+import com.example.yhotels.BuildConfig
 import com.example.yhotels.presentation.entities.Hotel
 import com.example.yhotels.data.entities.HotelDTO
 import com.example.yhotels.data.entities.HotelDetailsDTO
@@ -33,9 +33,9 @@ class Mapper{
         }
 
         private fun getImageUrl(imageId:String?):String{
-            val baseUrl = Constants.IMAGE_URL
+            val imageBaseUrl = BuildConfig.IMAGE_URL
             val urlBuilder = StringBuilder()
-            urlBuilder.append(baseUrl).append(imageId)
+            urlBuilder.append(imageBaseUrl).append(imageId)
             val imageUrl = urlBuilder.toString()
             return imageUrl
         }

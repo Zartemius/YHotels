@@ -19,7 +19,15 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
+
+        debug {
+            buildConfigField "String", "API_URL",'"https://raw.githubusercontent.com/iMofas/ios-android-test/master/"'
+            buildConfigField "String", "IMAGE_URL", '"https://github.com/iMofas/ios-android-test/raw/master/"'
+        }
+
         release {
+            buildConfigField "String", "API_URL",'"https://raw.githubusercontent.com/iMofas/ios-android-test/master/"'
+            buildConfigField "String", "IMAGE_URL", '"https://github.com/iMofas/ios-android-test/raw/master/"'
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

@@ -1,6 +1,6 @@
 package com.example.yhotels.data.externaldatasource
 
-import com.example.yhotels.common.Constants
+import com.example.yhotels.BuildConfig
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -8,8 +8,9 @@ import java.util.concurrent.TimeUnit
 
 fun getApiInterface(): ApiInterface{
 
+    val baseUrl = BuildConfig.API_URL
     val builder = Retrofit.Builder()
-        .baseUrl(Constants.API_URL)
+        .baseUrl(baseUrl)
         .addConverterFactory(GsonConverterFactory.create())
 
     val httpClient = OkHttpClient.Builder()

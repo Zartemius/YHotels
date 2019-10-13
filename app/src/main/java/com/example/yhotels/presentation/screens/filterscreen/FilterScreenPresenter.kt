@@ -2,13 +2,11 @@ package com.example.yhotels.presentation.screens.filterscreen
 
 import com.example.yhotels.presentation.BasePresenter
 import com.example.yhotels.presentation.entities.FilterSettings
-import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
-class FilterScreenPresenter@Inject constructor(router: Router)
+class FilterScreenPresenter@Inject constructor()
     :BasePresenter<FilterScreenContract>(){
 
-    private val mRouter = router
     private var mSortingByDistanceSettingIsSet = false
     private var mSortingByRoomsSettingIsSet = false
     private var mInitialInitializationIsDone = false
@@ -66,7 +64,6 @@ class FilterScreenPresenter@Inject constructor(router: Router)
     fun processReturningToPreviousScreen(){
         clearUnsavedSettings()
         view?.returnCurrentSettings(mFilterSettings)
-        mRouter.exit()
     }
 
     fun setFilterSettings(filterSettings: FilterSettings){
