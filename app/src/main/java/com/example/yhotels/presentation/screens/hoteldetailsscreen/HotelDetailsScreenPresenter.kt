@@ -25,23 +25,22 @@ class HotelDetailsScreenPresenter @Inject constructor(router: Router,
         if(mHotelDetails == null) {
             launch {
                     try{
-                            val responseWithContent = mMainContentDataSource.getHotelById(mHotelId)
-                            withContext(Dispatchers.Main) {
-                                if (responseWithContent.isSuccessful) {
-                                    mHotelDetails = Mapper.mapHotelDetails(responseWithContent.body())
+                        val responseWithContent = mMainContentDataSource.getHotelById(mHotelId)
+                        withContext(Dispatchers.Main) {
+                            if (responseWithContent.isSuccessful) {
+                                mHotelDetails = Mapper.mapHotelDetails(responseWithContent.body())
 
-                                    view?.showProgressBar()
-
-                                    mHotelDetails?.let{
-                                        processLoadingHotelImage(it)
-                                        try {
-                                            view?.loadMainContentInViews(it)
-                                        }catch (e:NullPointerException){
-                                            e.printStackTrace()
-                                        }
+                                view?.showProgressBar()
+                                mHotelDetails?.let{
+                                    processLoadingHotelImage(it)
+                                    try {
+                                        view?.loadMainContentInViews(it)
+                                    }catch (e:NullPointerException){
+                                        e.printStackTrace()
                                     }
                                 }
                             }
+                        }
                     }catch(e:NullPointerException){
                       e.printStackTrace()
                     } catch (e: HttpException) {
@@ -55,7 +54,7 @@ class HotelDetailsScreenPresenter @Inject constructor(router: Router,
                 }
         }else{
             launch {
-                withContext(Dispatchers.Main) {
+                    withContext(Dispatchers.Main) {
                     mHotelDetails?.let {
                         processLoadingHotelImage(it)
                     }
@@ -80,11 +79,11 @@ class HotelDetailsScreenPresenter @Inject constructor(router: Router,
 
     private fun initHotelDetailsScreen(){
         try {
-                if (view?.isInternetConnectionActive()!!) {
-                    loadScreenContent()
-                } else {
-                    view?.showNoInternetWarning()
-                }
+            if (view?.isInternetConnectionActive()!!) {
+                loadScreenContent()
+            } else {
+                view?.showNoInternetWarning()
+            }
         }catch (e:NullPointerException){
             e.printStackTrace()
         }

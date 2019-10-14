@@ -26,26 +26,25 @@ class MainScreenPresenter@Inject constructor(router: Router,
     private var mFilterSettings: FilterSettings = FilterSettings()
 
     private fun loadHotels(listWasRefreshed:Boolean){
-            launch {
-                        try {
-                                val response = getHotelsList()
-                                withContext(Dispatchers.Main){
-                                        if(response.isSuccessful){
-                                            mHotelsList =
-                                                Mapper.mapHotelsList(response.body()!!)
-                                            view?.setRecyclerViewPreparedForLoading()
-                                            view?.setHotelsList(mHotelsList)
-                                            view?.setFilterButtonIsEnabled()
-                                            hideProgressBar(listWasRefreshed)
-                                        }
-                                }
-                        }catch(e:HttpException){
-
-                        }catch (e:IOException){
-                            view?.showNoInternetWarning()
-                        }catch (e:Throwable){
-
+        launch {
+                try {
+                    val response = getHotelsList()
+                    withContext(Dispatchers.Main){
+                        if(response.isSuccessful){
+                            mHotelsList = Mapper.mapHotelsList(response.body()!!)
+                            view?.setRecyclerViewPreparedForLoading()
+                            view?.setHotelsList(mHotelsList)
+                            view?.setFilterButtonIsEnabled()
+                            hideProgressBar(listWasRefreshed)
                         }
+                    }
+                }catch(e:HttpException){
+
+                }catch (e:IOException){
+                        view?.showNoInternetWarning()
+                }catch (e:Throwable){
+
+                }
             }
     }
 
@@ -74,11 +73,11 @@ class MainScreenPresenter@Inject constructor(router: Router,
     }
 
     private fun hideProgressBar(refreshProgressBarIsActive:Boolean){
-            if(refreshProgressBarIsActive){
-                view?.hideRefreshingProgressBar()
-            }else{
-                view?.hideProgressBar()
-            }
+        if(refreshProgressBarIsActive){
+            view?.hideRefreshingProgressBar()
+        }else{
+            view?.hideProgressBar()
+        }
     }
 
     private fun initHotelsList(){
@@ -102,17 +101,16 @@ class MainScreenPresenter@Inject constructor(router: Router,
 
     fun applyUpdatesToHotelsList(){
         try {
-                if(view?.isInternetConnectionActive()!!) {
-                    if(mHotelsList.isEmpty()){
-                        loadHotels(true)
-                    }else{
-                        updateHotelsList()
-                    }
-
+            if(view?.isInternetConnectionActive()!!) {
+                if(mHotelsList.isEmpty()){
+                    loadHotels(true)
                 }else{
-                    view?.hideRefreshingProgressBar()
-                    view?.showNoInternetWarning()
+                    updateHotelsList()
                 }
+            }else{
+                view?.hideRefreshingProgressBar()
+                view?.showNoInternetWarning()
+            }
         }catch (e:NullPointerException){
             e.printStackTrace()
         }
