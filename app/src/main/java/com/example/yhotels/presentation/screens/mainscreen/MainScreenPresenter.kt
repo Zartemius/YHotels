@@ -50,18 +50,18 @@ class MainScreenPresenter@Inject constructor(router: Router,
 
     private fun updateHotelsList(){
             launch {
-                try {
-                    val response = getHotelsList()
-                    withContext(Dispatchers.Main) {
-                        if (response.isSuccessful) {
-                            mHotelsList =
-                                Mapper.mapHotelsList(response.body()!!)
-                            applyFilterSettings(mHotelsList, true)
-                            view?.setRecyclerViewPreparedForLoading()
-                            view?.updateHotelsList(mHotelsList)
-                            hideProgressBar(true)
+                    try {
+                        val response = getHotelsList()
+                        withContext(Dispatchers.Main) {
+                            if (response.isSuccessful) {
+                                mHotelsList =
+                                    Mapper.mapHotelsList(response.body()!!)
+                                applyFilterSettings(mHotelsList, true)
+                                view?.setRecyclerViewPreparedForLoading()
+                                view?.updateHotelsList(mHotelsList)
+                                hideProgressBar(true)
+                            }
                         }
-                    }
                 } catch (e: HttpException) {
 
                 } catch (e: IOException) {
